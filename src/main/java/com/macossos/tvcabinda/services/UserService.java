@@ -40,4 +40,8 @@ public class UserService {
 		return userRepository.save(oldUser);
 	}
 
+	public void delete(Integer id) {
+		User user = findById(id);
+		userRepository.delete(user);
+	}
 }
