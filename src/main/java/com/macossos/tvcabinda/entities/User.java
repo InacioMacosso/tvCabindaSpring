@@ -63,6 +63,7 @@ public class User implements Serializable {
 		this.phone = ojtDto.getPhone();
 		this.dataCriacao = ojtDto.getDataCriacao();
 		this.roles = ojtDto.getRoles().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+		addRole(Role.CLIENTE);
 	}
 
 	public Integer getId() {

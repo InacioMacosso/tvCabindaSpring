@@ -32,4 +32,12 @@ public class UserService {
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
+
+	public User update(Integer id, @Valid UsuarioDTO usuarioDTO) {
+		usuarioDTO.setId(id);
+		User oldUser = findById(id);
+		oldUser = new User(usuarioDTO);
+		return userRepository.save(oldUser);
+	}
+
 }
