@@ -19,5 +19,8 @@ public class News implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "territory_id")
 	private Territory territory;
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 }
