@@ -1,5 +1,6 @@
 package com.macossos.tvcabinda.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -26,5 +27,9 @@ public class UserService {
 	public User findById(Integer id) {
 		Optional<User> user = userRepository.findById(id);
 		return user.orElseThrow(() -> new ObjectNotFoundException("Usuario nao encontrado! id: " + id));
+	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 }

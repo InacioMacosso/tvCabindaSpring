@@ -1,6 +1,8 @@
 package com.macossos.tvcabinda.controllers;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -36,6 +38,13 @@ public class UserController {
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Integer id) {
 		User user = userService.findById(id);
 		return ResponseEntity.ok().body(new UsuarioDTO(user));
+	}
+
+	@GetMapping
+	public ResponseEntity<List<UsuarioDTO>> findAll() {
+		List<User> users = userService.findAll();
+		List<UsuarioDTO> usuarioDTOs = users.stream().map(obj -> new UsuarioDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(usuarioDTOs);
 	}
 
 }
