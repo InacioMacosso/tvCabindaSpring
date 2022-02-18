@@ -12,6 +12,7 @@ import com.macossos.tvcabinda.entities.User;
 import com.macossos.tvcabinda.entities.dtos.UsuarioDTO;
 import com.macossos.tvcabinda.repositories.UserRepository;
 import com.macossos.tvcabinda.services.exceptions.ObjectNotFoundException;
+import com.macossos.tvcabinda.services.exceptions.DataIntegrityViolationException;
 
 @Service
 public class UserService {
@@ -20,6 +21,7 @@ public class UserService {
 
 	public User create(@Valid UsuarioDTO usuarioDTO) {
 		usuarioDTO.setId(null);
+		validarPorEmailAndTelefone(usuarioDTO);
 		User user = new User(usuarioDTO);
 		return userRepository.save(user);
 	}
@@ -36,6 +38,7 @@ public class UserService {
 	public User update(Integer id, @Valid UsuarioDTO usuarioDTO) {
 		usuarioDTO.setId(id);
 		User oldUser = findById(id);
+		validarPorEmailAndTelefone(usuarioDTO);
 		oldUser = new User(usuarioDTO);
 		return userRepository.save(oldUser);
 	}
@@ -43,5 +46,18 @@ public class UserService {
 	public void delete(Integer id) {
 		User user = findById(id);
 		userRepository.delete(user);
+	}
+
+	private void validarPorEmailAndTelefone(UsuarioDTO usuarioDTO) {
+		Optional<User> user = userRepository.findByEmail(usuarioDTO.getEmail());
+		if (user.isPresent() && user.get().getId() != usuarioDTO.getId()) {
+			throw new DataIntegrityViolationException("Email ja cadastrado");
+		}
+
+		user = userRepository.findByPhone(usuarioDTO.getPhone());
+		if (user.isPresent() && user.get().getId() != usuarioDTO.getId()) {
+			throw new DataIntegrityViolationException("Telefone ja cadastrado");
+		}
+
 	}
 }

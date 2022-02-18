@@ -20,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.macossos.tvcabinda.entities.User;
 import com.macossos.tvcabinda.entities.dtos.UsuarioDTO;
-import com.macossos.tvcabinda.services.CategoryService;
 import com.macossos.tvcabinda.services.UserService;
 
 @RestController
