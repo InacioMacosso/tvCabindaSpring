@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.macossos.tvcabinda.entities.User;
@@ -19,8 +20,12 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BCryptPasswordEncoder encoder;
+
 	public User create(@Valid UsuarioDTO usuarioDTO) {
 		usuarioDTO.setId(null);
+		usuarioDTO.setPassword(encoder.encode(usuarioDTO.getPassword()));
 		validarPorEmailAndTelefone(usuarioDTO);
 		User user = new User(usuarioDTO);
 		return userRepository.save(user);
@@ -38,6 +43,9 @@ public class UserService {
 	public User update(Integer id, @Valid UsuarioDTO usuarioDTO) {
 		usuarioDTO.setId(id);
 		User oldUser = findById(id);
+		if (!usuarioDTO.getPassword().equals(oldUser.getPassword())) {
+			usuarioDTO.setPassword(encoder.encode(usuarioDTO.getPassword()));
+		}
 		validarPorEmailAndTelefone(usuarioDTO);
 		oldUser = new User(usuarioDTO);
 		return userRepository.save(oldUser);

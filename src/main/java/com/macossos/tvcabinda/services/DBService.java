@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.management.loading.PrivateClassLoader;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.macossos.tvcabinda.entities.Category;
@@ -28,16 +29,20 @@ public class DBService {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private NewsRepository newsRepository;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	private String body;
 
 	public void instanciaDB() {
-		User user1 = new User(null, "Inacio", "Macosso", "inaciomacosso@yahoo.com", "password", "0102034545");
+		User user1 = new User(null, "Inacio", "Macosso", "inaciomacosso@yahoo.com", encoder.encode("password"),
+				"0102034545");
 		user1.addRole(Role.ADMIN);
-		User user2 = new User(null, "Macosso", "Inacio", "macosso@yahoo.com", "password", "0202034545");
+		User user2 = new User(null, "Macosso", "Inacio", "macosso@yahoo.com", encoder.encode("password"), "0202034545");
 		user2.addRole(Role.CLIENTE);
-		User user3 = new User(null, "Inacio", "Macosso", "inacio@yahoo.com", "password", "0302034545");
+		User user3 = new User(null, "Inacio", "Macosso", "inacio@yahoo.com", encoder.encode("password"), "0302034545");
 		user3.addRole(Role.ADMIN);
-		User user4 = new User(null, "Macosso", "Inacio", "macossoinacio@yahoo.com", "password", "0402034545");
+		User user4 = new User(null, "Macosso", "Inacio", "macossoinacio@yahoo.com", encoder.encode("password"),
+				"0402034545");
 		user4.addRole(Role.CLIENTE);
 		userRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
 

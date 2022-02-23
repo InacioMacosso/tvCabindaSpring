@@ -15,7 +15,6 @@ public class TerritoryDTO implements Serializable {
 
 	public TerritoryDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public TerritoryDTO(Territory territory) {

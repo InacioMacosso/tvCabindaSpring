@@ -3,16 +3,20 @@ package com.macossos.tvcabinda.entities.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.macossos.tvcabinda.entities.News;
 
 public class NewsDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
+	@NotNull(message = "O campo TITULO é requerido")
 	private String title;
 	private String photo;
 	private String video;
 	private String slug;
+	@NotNull(message = "O campo CORPO é requerido")
 	private String body;
 	private Boolean isBest = false;
 	@JsonFormat(pattern = "dd/MM/yyyy")
