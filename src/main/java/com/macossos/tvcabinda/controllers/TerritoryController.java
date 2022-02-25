@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class TerritoryController {
 	@Autowired
 	private TerritoryService territoryService;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<TerritoryDTO> create(@Valid @RequestBody TerritoryDTO territoryDTO) {
 		Territory newObj = territoryService.create(territoryDTO);
@@ -49,6 +51,7 @@ public class TerritoryController {
 		return ResponseEntity.ok().body(territoryDTOs);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<TerritoryDTO> update(@PathVariable Integer id,
 			@Valid @RequestBody TerritoryDTO territoryDTO) {
@@ -56,6 +59,7 @@ public class TerritoryController {
 		return ResponseEntity.ok().body(new TerritoryDTO(territory));
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<TerritoryDTO> delete(@PathVariable Integer id) {
 		territoryService.delete(id);

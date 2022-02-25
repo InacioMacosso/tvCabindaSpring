@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class NewsController {
 	@Autowired
 	private NewsService newsService;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<NewsDTO> create(@Valid @RequestBody NewsDTO objDto) {
 		News newObj = newsService.create(objDto);
@@ -48,12 +50,14 @@ public class NewsController {
 		return ResponseEntity.ok().body(new NewsDTO(news));
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<NewsDTO> update(@PathVariable Integer id, @Valid @RequestBody NewsDTO newsDTO) {
 		News news = newsService.update(id, newsDTO);
 		return ResponseEntity.ok().body(new NewsDTO(news));
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<NewsDTO> delete(@PathVariable Integer id) {
 		newsService.delete(id);

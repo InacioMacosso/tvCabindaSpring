@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CategoryDTO categoryDTO) {
 		Category newObj = categoryService.create(categoryDTO);
@@ -49,12 +51,14 @@ public class CategoryController {
 		return ResponseEntity.ok().body(categoryDTOs);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoryDTO> update(@PathVariable Integer id, @Valid @RequestBody CategoryDTO categoryDTO) {
 		Category category = categoryService.update(id, categoryDTO);
 		return ResponseEntity.ok().body(new CategoryDTO(category));
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CategoryDTO> delete(@PathVariable Integer id) {
 		categoryService.delete(id);
